@@ -52,9 +52,13 @@ const Shapes = () => {
     <div className='grid grid-cols-2 gap-3'>
         {
             ShapeList.map((shape) => (
-                <div key={shape.name} className='cursor-pointer p2 border rounded-xl' onClick={() => onShapeSelect(shape)}>
-                    <Image src={shape.icon} alt={shape.name} height={100} width={100} className='w-full h-full' />
-                </div>
+                <div
+  key={shape.name}
+  className="cursor-pointer p-2 border rounded-xl transition-colors hover:bg-gray-100 active:bg-gray-200"
+  onClick={() => onShapeSelect(shape)}
+>
+  <Image src={shape.icon} alt={shape.name} height={100} width={100} className="w-full h-full" />
+</div>
             ))
         }
     </div>

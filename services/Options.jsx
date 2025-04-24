@@ -1,7 +1,13 @@
-import { UploadCloud, Settings, FillColor,BorderColor,BorderWidth,Opacity,BorderRadius,MoveForward,MoveBackword,WalletIcon, Folder, Home, Image, Palette,LayoutTemplate, ShapesIcon, Sparkle, Component, Type,Square,Minus,Blend,SquareRoundCorner,ArrowUp,ArrowDown } from "lucide-react";
+import { UploadCloud, Settings,WalletIcon, Folder, Home, Image, Palette,LayoutTemplate, ShapesIcon, Sparkle, Component, Type,Square,Minus,Blend,SquareRoundCorner,ArrowUp,ArrowDown } from "lucide-react";
 import BackgroundSettings from "./Components/BackgroundSettings";
 import AddImageSettings from "./Components/AddImageSettings";
 import Elements from "./Components/Elements";
+import BorderRadius from "./Sharable/BorderRadius";
+import FillColor from "./Sharable/FillColor";
+import BorderColor from "./Sharable/BorderColor";
+import BorderWidth from "./Sharable/BorderWidth";
+import Opacity from "./Sharable/Opacity";
+
 
 export const SidebarItems = [
   {
@@ -174,18 +180,5 @@ export const shapesSettingsList = [
         icon: SquareRoundCorner,
         component: <BorderRadius />
     },
-    {
-        name: 'Bring Front',
-        icon: ArrowUp,
-        component: <MoveForward />
-    },
-    {
-        name: 'Move Back',
-        icon: ArrowDown,
-        component: <MoveBackword />
-    },
-    // {
-    //     name: 'Delete',
-    //     icon: Trash
-    // }
+
 ]
