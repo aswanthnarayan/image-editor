@@ -1,6 +1,7 @@
-import { UploadCloud, Settings, WalletIcon, Folder, Home, Image, LayoutTemplate, ShapesIcon, Sparkle, Component, Type } from "lucide-react";
+import { UploadCloud, Settings, FillColor,BorderColor,BorderWidth,Opacity,BorderRadius,MoveForward,MoveBackword,WalletIcon, Folder, Home, Image, Palette,LayoutTemplate, ShapesIcon, Sparkle, Component, Type,Square,Minus,Blend,SquareRoundCorner,ArrowUp,ArrowDown } from "lucide-react";
 import BackgroundSettings from "./Components/BackgroundSettings";
 import AddImageSettings from "./Components/AddImageSettings";
+import Elements from "./Components/Elements";
 
 export const SidebarItems = [
   {
@@ -96,6 +97,7 @@ export const sideBarMenu = [
       name: 'Elements',
       desc: 'Select Shapes and Stickers',
       icon: ShapesIcon,
+      component: <Elements />
   },
   {
       name: 'Images',
@@ -124,4 +126,66 @@ export const sideBarMenu = [
       desc: 'Update Canvas Size and background',
       icon: Settings
   }
+]
+
+export const ShapeList = [
+    {
+        name: 'Circle',
+        icon: '/moon.png'
+    },
+    {
+        name: 'Square',
+        icon: '/square.png'
+    },
+    {
+        name: 'Trangle',
+        icon: '/trangle.png'
+    },
+    {
+        name: 'Line',
+        icon: '/line.png'
+    }
+]
+
+
+export const shapesSettingsList = [
+    {
+        name: 'Fill',
+        icon: Palette,
+        component: <FillColor />
+    },
+    { 
+        name: 'Stroke Color',
+        icon: Square,
+        component: <BorderColor />
+    },
+    {
+        name: 'Stroke Width',
+        icon: Minus,
+        component: <BorderWidth />
+    },
+    {
+        name: 'Opacity',
+        icon: Blend,
+        component: <Opacity />
+    },
+    {
+        name: 'Rounded Corner',
+        icon: SquareRoundCorner,
+        component: <BorderRadius />
+    },
+    {
+        name: 'Bring Front',
+        icon: ArrowUp,
+        component: <MoveForward />
+    },
+    {
+        name: 'Move Back',
+        icon: ArrowDown,
+        component: <MoveBackword />
+    },
+    // {
+    //     name: 'Delete',
+    //     icon: Trash
+    // }
 ]
