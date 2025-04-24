@@ -1,5 +1,6 @@
 import { UploadCloud, Settings, WalletIcon, Folder, Home, Image, LayoutTemplate, ShapesIcon, Sparkle, Component, Type } from "lucide-react";
 import BackgroundSettings from "./Components/BackgroundSettings";
+import AddImageSettings from "./Components/AddImageSettings";
 
 export const SidebarItems = [
   {
@@ -100,6 +101,7 @@ export const sideBarMenu = [
       name: 'Images',
       desc: 'Add Image or Upload your own',
       icon: Image,
+      component: <AddImageSettings />
   },
   {
       name: 'Text',
