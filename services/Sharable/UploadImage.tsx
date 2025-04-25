@@ -10,13 +10,12 @@ const UploadImage = () => {
   const [loading, setLoading] = useState(false)
   const designId = useParams()
   const fileInputRef = useRef<HTMLInputElement>(null)
-      const {canvasEditor} = useCanvasHook();
+  const {canvasEditor} = useCanvasHook();
   var imagekit = new ImageKit({
     publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY,
     privateKey: process.env.NEXT_PUBLIC_IMAGEKIT_PRIVATE_KEY,
     urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT
 })
-
   const onButtonClick = () => {
     fileInputRef.current?.click()
   }

@@ -5,7 +5,11 @@ import { useCanvasHook } from '@/context/CanvasContext';
 import { Trash, MousePointer } from "lucide-react";
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
-import { shapesSettingsList } from '@/services/Options';
+import { shapesSettingsList, TextSettingsList } from '@/services/Options';
+import CommonToolbar from '@/services/Sharable/CommonToolbar';
+import ShapeToolbar from '@/services/Sharable/ShapeToolbar';
+import TextToolbar from '@/services/Sharable/TextToolbar';
+import FontStyles from '@/services/Sharable/FontStyles';
 
 const CanvasEditor = () => {
     const [selectedObjectType, setSelectedObjectType] = useState<string | null>(null);
@@ -126,37 +130,18 @@ const CanvasEditor = () => {
         <div className="w-full h-[calc(100vh-64px)] flex flex-col items-center">
             {!isCanvasEmpty && (
                 <div className="flex gap-2 mb-4 w-full py-2 items-center select-none bg-white">
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        aria-label="Select Object"
-                        onClick={handleSelect}
-                        className="w-8 h-8 p-0 hover:text-black hover:bg-gray-100 active:bg-gray-200"
-                    >
-                        <MousePointer strokeWidth={2.2} className="w-4 h-4" />
-                    </Button>
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        aria-label="Delete Selected Object"
-                        onClick={handleDelete}
-                        className="w-8 h-8 p-0 hover:bg-red-100 active:bg-red-200"
-                    >
-                        <Trash strokeWidth={2.2} className="w-4 h-4 text-red-500" />
-                    </Button>
+                    <CommonToolbar handleSelect={handleSelect} handleDelete={handleDelete} />
                     {/* Show shape settings if a shape is selected */}
-                    {['rect', 'circle', 'ellipse', 'polygon', 'triangle', 'line'].includes(selectedObjectType || '') && shapesSettingsList.map((item, idx) => (
-                        <Popover key={item.name}>
-                            <PopoverTrigger asChild>
-  <div className="w-8 h-8 p-0 flex items-center justify-center rounded-md hover:bg-gray-100 active:bg-gray-200 transition-colors">
-    <item.icon />
-  </div>
-</PopoverTrigger>
-                            <PopoverContent>
-                                {item.component}
-                            </PopoverContent>
-                        </Popover>
+                    {['rect', 'circle', 'ellipse', 'polygon', 'triangle', 'line'].includes(selectedObjectType || '') && shapesSettingsList.map((item) => (
+                        <ShapeToolbar item={item} />
                     ))}
+                    {/* Show text settings if a text is selected */}
+                    {selectedObjectType === 'i-text' && TextSettingsList.map((item) => (
+                        <TextToolbar item={item} />
+                    ))}
+                    {
+                        selectedObjectType === 'i-text' && <FontStyles />
+                    }
                 </div>
             )}
 
