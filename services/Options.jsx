@@ -10,6 +10,7 @@ import Opacity from "./Sharable/Opacity";
 import AiTransformation from "./Components/AiTransformation";
 import TextSettings from "./Components/TextSettings";
 import FontFamily from "./Sharable/FontFamily";
+import TemplateList from "./Components/TemplateList";
 
 
 export const SidebarItems = [
@@ -99,6 +100,7 @@ export const sideBarMenu = [
       name: 'Templates',
       desc: 'Select Prebuild Template',
       icon: LayoutTemplate,
+      component: <TemplateList />
   },
   {
       name: 'Elements',

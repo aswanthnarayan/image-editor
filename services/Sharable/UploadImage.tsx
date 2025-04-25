@@ -31,7 +31,10 @@ const UploadImage = () => {
     })
     setLoading(false)
     const canvasImageRef =await FabricImage.fromURL(
-      imageRef?.url
+      imageRef?.url,
+      {
+        crossOrigin: 'anonymous'
+      }
     )
     canvasEditor?.add(canvasImageRef)
     canvasEditor?.renderAll()

@@ -18,4 +18,12 @@ export default defineSchema({
     imagePreview:v.optional(v.string()),
     uid:v.id("users")
   }),
+
+   templates: defineTable({
+    name: v.string(),
+    jsonData:v.any(),
+    imagePreview:v.string(),
+    active:v.boolean()
+  }),
+  
 });

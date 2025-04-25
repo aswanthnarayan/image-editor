@@ -28,3 +28,18 @@ export const CreateNewDesign = mutation({
       return result;
     }
   })
+
+  export const saveDesign = mutation({
+    args: {
+      id: v.id("designs"),
+      jsonDesign: v.any(),
+      imagePreview: v.optional(v.string())
+    },
+    handler: async (ctx, args) => {
+      const result = await ctx.db.patch(args.id, {
+        jsonTemplate: args.jsonDesign,
+        imagePreview: args.imagePreview
+      })
+      return result;
+    }
+  })

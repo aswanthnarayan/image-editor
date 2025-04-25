@@ -40,7 +40,10 @@ const CustomImageUpload = ({ selectedAI }: CustomImageUploadProps) => {
   const onAddtoCanvas = async() => {
     setLoading(true);
     const canvasImageRef =await FabricImage.fromURL(
-          image
+          image,
+          {
+            crossOrigin: 'anonymous'
+          }
         )
         canvasEditor?.add(canvasImageRef)
         setImage('')

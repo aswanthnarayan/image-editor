@@ -9,7 +9,9 @@ const Stickers = () => {
 
   const onAddSticker = async (url: string) => {
     if (!canvasEditor) return;
-    const canvasImageRef = await FabricImage.fromURL(url)
+    const canvasImageRef = await FabricImage.fromURL(url,{
+      crossOrigin: 'anonymous'
+    })
     canvasImageRef.set({
         left: 100, 
         top: 100,   

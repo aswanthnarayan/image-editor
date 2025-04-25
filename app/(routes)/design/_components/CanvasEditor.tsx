@@ -21,7 +21,7 @@ const CanvasEditor = () => {
     const { canvasEditor, setCanvasEditor } = useCanvasHook();
 
     useEffect(() => {
-        if (canvasRef.current && containerRef.current && design?.width && design?.height) {
+        if (canvasRef.current && containerRef.current && design?._id && design.width && design.height) {
             const containerWidth = containerRef.current.clientWidth;
             const containerHeight = containerRef.current.clientHeight;
 
@@ -42,6 +42,12 @@ const CanvasEditor = () => {
             // Optional: set zoom to scale, so objects still act at their original size
             initCanvas.setZoom(scale);
 
+            if (design.jsonTemplate) {
+                initCanvas.loadFromJSON(design.jsonTemplate, () => {
+                  initCanvas.requestRenderAll();
+                });
+              }
+
             setCanvas(initCanvas);
             setCanvasEditor(initCanvas);
 
@@ -49,7 +55,7 @@ const CanvasEditor = () => {
                 initCanvas.dispose();
             };
         }
-    }, [design]);
+    }, [design?._id]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -84,6 +90,8 @@ const CanvasEditor = () => {
             if (active) {
                 // For fabric.js, common shape types are 'rect', 'circle', 'ellipse', 'polygon', 'triangle', 'line', etc.
                 setSelectedObjectType(active.type || null);
+                canvas.bringObjectToFront(active);
+                canvas.renderAll();
             } else {
                 setSelectedObjectType(null);
             }
@@ -110,6 +118,7 @@ const CanvasEditor = () => {
             const objects = canvas.getObjects();
             if (objects.length > 0) {
                 canvas.setActiveObject(objects[0]);
+        
                 canvas.renderAll();
             }
         }
@@ -133,11 +142,11 @@ const CanvasEditor = () => {
                     <CommonToolbar handleSelect={handleSelect} handleDelete={handleDelete} />
                     {/* Show shape settings if a shape is selected */}
                     {['rect', 'circle', 'ellipse', 'polygon', 'triangle', 'line'].includes(selectedObjectType || '') && shapesSettingsList.map((item) => (
-                        <ShapeToolbar item={item} />
+                        <ShapeToolbar key={item.name} item={item} />
                     ))}
                     {/* Show text settings if a text is selected */}
                     {selectedObjectType === 'i-text' && TextSettingsList.map((item) => (
-                        <TextToolbar item={item} />
+                        <TextToolbar key={item.name} item={item} />
                     ))}
                     {
                         selectedObjectType === 'i-text' && <FontStyles />
@@ -150,7 +159,7 @@ const CanvasEditor = () => {
                 ref={containerRef}
                 className={`flex flex-col flex-1 w-full items-center justify-center overflow-hidden ${isCanvasEmpty ? 'my-4' : 'mb-4'}`}
             >
-                <canvas ref={canvasRef} />
+                <canvas  ref={canvasRef} />
             </div>
         </div>
     );

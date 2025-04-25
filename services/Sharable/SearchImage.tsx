@@ -31,7 +31,9 @@ const SearchImage = () => {
     }
 
     const setImageToFabric = async (url: string) => {
-        const canvasImageRef = await FabricImage.fromURL(url)
+        const canvasImageRef = await FabricImage.fromURL(url,{
+            crossOrigin: 'anonymous'
+        })
         canvasEditor?.add(canvasImageRef)
         canvasEditor?.renderAll()
     }
