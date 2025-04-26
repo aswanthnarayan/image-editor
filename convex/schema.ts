@@ -23,7 +23,9 @@ export default defineSchema({
     name: v.string(),
     jsonData:v.any(),
     imagePreview:v.string(),
-    active:v.boolean()
+    active:v.boolean(),
+    height:v.optional(v.number()),
+    width:v.optional(v.number())
   }),
   
 });

@@ -1,10 +1,11 @@
 "use client"
 import { CirclePlus } from "lucide-react";
 import { SidebarItems } from '../../../../services/Options';
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
   return (
     <aside
       style={{
@@ -28,6 +29,7 @@ export default function Sidebar() {
                 ${pathname === item.path ? "bg-violet-100 text-violet-600 shadow-md" : "text-gray-400 hover:bg-gray-100"}
               `}
               title={item.label}
+              onClick={() => router.push(item.path)}
             >
               <span className="w-7 h-7 flex items-center justify-center">{item.icon}</span>
               <span className="text-xs mt-1 font-medium">{item.label}</span>

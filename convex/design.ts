@@ -43,3 +43,37 @@ export const CreateNewDesign = mutation({
       return result;
     }
   })
+
+  export const GetAllDesignByUser = query({
+    args: {
+      uid: v.id("users")
+    },
+    handler: async (ctx, args) => {
+      const result = await ctx.db.query('designs')
+      .filter(q=>q.eq(q.field("uid"), args.uid))
+      .collect()
+      return result;
+    }
+  })
+
+  export const CreateDesignFromTemplate = mutation({
+    args: {
+      name: v.string(),
+      imagePreview: v.string(),
+      jsonTemplate: v.any(),
+      height: v.number(),
+      width: v.number(),
+      uid: v.id("users")
+    },
+    handler: async (ctx, args) => {
+      const result = await ctx.db.insert('designs', {
+        name: args.name,
+        width: args.width,
+        height: args.height,
+        jsonTemplate: args.jsonTemplate,
+        imagePreview: args.imagePreview,
+        uid: args.uid
+      })
+      return result;
+    }
+  })

@@ -1,8 +1,14 @@
 import React from 'react'
 import WorkspaceHeader from './_components/WorkspaceHeader'
 import Sidebar from './_components/Sidebar'
+import { stackServerApp } from "@/stack";
+import { redirect } from "next/navigation";
 
-const WorkspaceLayout = ({ children }: { children: React.ReactNode }) => {
+const WorkspaceLayout = async ({ children }: { children: React.ReactNode }) => {
+  const user = await stackServerApp.getUser({ or: "redirect" });
+  if (user && !user.primaryEmailVerified) {
+    redirect("/?verifyEmail=1");
+  }
   return (
     <div className="h-screen flex flex-col">
       {/* Fixed Header */}

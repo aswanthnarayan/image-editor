@@ -19,11 +19,10 @@ export const SidebarItems = [
     icon: <Home />,
     path: "/workspace",
   },
-  { icon: <Image />, label: "Projects", path: "/workspace/projects" },
-  { icon: <Folder />, label: "Templates", path: "/workspace/templates" },
-  { icon: <WalletIcon />, label: "Billing", path: "/workspace/billing" },
-  { icon: <UploadCloud />, label: "Uploads", path: "/workspace/uploads" },
-  { icon: <Settings />, label: "Settings", path: "/workspace/settings" },
+  { icon: <Image />, label: "Projects", path: "/workspace/projects" ,path: "/workspace/projects" },
+  { icon: <Folder />, label: "Templates", path: "/workspace/templates" ,path: "/workspace/templates" },
+  { icon: <WalletIcon />, label: "Billing", path: "/workspace/billing" ,path: "/workspace/billing" },
+  { icon: <Settings />, label: "Settings", path: "/workspace/settings" ,path: "/workspace/settings" },
 ];
 
 export const canvasSizeOptions = [

@@ -5,7 +5,15 @@ import DesignSidebar from './_components/DesignSidebar';
 import { DesignProvider } from "@/context/DesignContext";
 import { CanvasProvider } from "@/context/CanvasContext";
 
-const DesignLayout = ({ children }: { children: React.ReactNode }) => {
+import { stackServerApp } from "@/stack";
+import { redirect } from "next/navigation";
+
+
+const DesignLayout = async ({ children }: { children: React.ReactNode }) => {
+  const user = await stackServerApp.getUser({ or: "redirect" });
+  if (!user.primaryEmailVerified) {
+    redirect("/?verifyEmail=1");
+  }
   return (
     <DesignProvider>
       <CanvasProvider>
