@@ -36,9 +36,9 @@ const DesignHeader = () => {
         })
 
         //Delete existing file
-        if (existingFiles?.data?.files?.length) {
-          await imagekit.deleteFile({
-            fileId: existingFiles.data.files[0].fileId
+        if (existingFiles?.files?.length) {
+          imagekit.deleteFile({
+            fileId: existingFiles.files[0].fileId
           })
         }
 
