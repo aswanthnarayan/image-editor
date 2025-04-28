@@ -15,7 +15,7 @@ const BackgroundSettings = () => {
     }
     return (
     <div>
-        <ColorPicker value={bgColor} onColorChange={(v: string)=>onColorChange(v)}/>
+        <ColorPicker value={bgColor} onColorChange={(v: string)=>onColorChange(v)} className="cursor-pointer"/>
     </div>
   )
 }

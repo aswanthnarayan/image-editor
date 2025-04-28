@@ -2,7 +2,7 @@ import { Canvas } from 'fabric';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDesign } from "@/context/DesignContext";
 import { useCanvasHook } from '@/context/CanvasContext';
-import { Trash, MousePointer } from "lucide-react";
+import { Trash, MousePointer, Paintbrush, Palette, PenTool, Ruler } from "lucide-react";
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { shapesSettingsList, TextSettingsList } from '@/services/Options';
@@ -107,7 +107,21 @@ const CanvasEditor = () => {
     }, [canvas]);
 
     if (!design) {
-        return <div className="flex items-center justify-center w-full h-full">Loading design...</div>;
+        return (
+            <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-64px)]">
+              <div
+                className="relative flex flex-col items-center justify-center bg-white border border-gray-300 rounded-xl shadow-lg"
+                style={{ width: 500, height: 500 }}
+              >
+                <div className="flex flex-row items-center justify-center gap-6">
+                  <Paintbrush className="h-14 w-14 text-indigo-400 animate-bounce [animation-delay:0ms]" />
+                  <Palette className="h-14 w-14 text-pink-400 animate-bounce [animation-delay:150ms]" />
+                  <PenTool className="h-14 w-14 text-blue-400 animate-spin-slow" />
+                  <Ruler className="h-14 w-14 text-yellow-400 animate-bounce [animation-delay:300ms]" />
+                </div>
+              </div>
+            </div>
+          );
     }
     if (!design.width || !design.height) {
         return <div className="flex items-center justify-center w-full h-full text-red-500">Invalid design data</div>;

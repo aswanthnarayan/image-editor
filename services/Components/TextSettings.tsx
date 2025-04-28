@@ -50,11 +50,11 @@ const TextSettings = () => {
   return (
     <div className='flex flex-col gap-3'>
         <h2 onClick={() => onAddTextClick('heading')}
-        className='text-2xl rounded-xl font-bold bg-secondary p-3'>Add Heading</h2>
+        className='text-2xl rounded-xl font-bold bg-secondary p-3 cursor-pointer'>Add Heading</h2>
         <h2 onClick={() => onAddTextClick('subheading')}
-        className='text-xl rounded-xl font-medium bg-secondary p-3'>Add SubHeading</h2>
+        className='text-xl rounded-xl font-medium bg-secondary p-3 cursor-pointer'>Add SubHeading</h2>
         <h2 onClick={() => onAddTextClick('paragraph')}
-        className='text-md rounded-xl  bg-secondary p-3'>Add Paragraph</h2>
+        className='text-md rounded-xl  bg-secondary p-3 cursor-pointer'>Add Paragraph</h2>
     </div>
   )
 }

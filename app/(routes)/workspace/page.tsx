@@ -8,7 +8,6 @@ const Workspace = () => {
     <div className='w-full h-full p-4'>
       <IntroOptions/>
       <RecentDesign title="Recent Design" limit={5}/>
-      <SkeletonCard className="w-full h-[200px] object-cover rounded-lg"/>
     </div>
   )
 }

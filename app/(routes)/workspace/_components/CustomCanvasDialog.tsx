@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+
 import {
     Dialog,
     DialogContent,
@@ -14,6 +15,7 @@ import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner'
 import { Loader2Icon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
 
 const CustomCanvasDialog = ({children}: {children: React.ReactNode}) => {
     const [open, setOpen] = useState(false);
@@ -34,21 +36,24 @@ const CustomCanvasDialog = ({children}: {children: React.ReactNode}) => {
           height: height,
           uid: userDetail?._id
         })
-        setLoading(false);
         toast("Design created successfully");
         setOpen(false); 
-        router.push(`/design/${result}`);
+        setTimeout(() => {
+            router.push(`/design/${result}`);
+          }, 300); 
     }
 
     return (
+        <>
+        {loading && <FullScreenLoader/>}
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>{children}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>Create Custom Canvas</DialogTitle>
-                    <DialogDescription>
+                    <div>
                         <div>
-                            <h2 className="font-bold mb-4">Provide Canvas Dimensions</h2>
+                            <h2 className="font-medium mb-4">Provide Canvas Dimensions</h2>
                             <div className="mb-4">
                                 <label className="block mb-1">Design Name</label>
                                 <input onChange={(e) => setName(e.target.value)} type="text" id="name" name="name" placeholder="Design Name" className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-primary" />
@@ -74,10 +79,11 @@ const CustomCanvasDialog = ({children}: {children: React.ReactNode}) => {
                                 {loading ? <Loader2Icon className="mr-2 h-4 w-4 animate-spin" /> : 'Create'}
                             </Button>
                         </div>
-                    </DialogDescription>
+                    </div>
                 </DialogHeader>
             </DialogContent>
         </Dialog>
+        </>
     )
 }
 

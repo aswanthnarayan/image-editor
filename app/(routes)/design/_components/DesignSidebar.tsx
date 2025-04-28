@@ -4,7 +4,7 @@ import { sideBarMenu } from '../../../../services/Options';
 import SidebarSettings from "./SidebarSettings";
 
 const DesignSidebar = () => {
-    const [selectedOption, setSelectedOption] = useState();
+    const [selectedOption, setSelectedOption] = useState(null);
   
     return (
       <div className="flex h-full">
@@ -29,9 +29,9 @@ const DesignSidebar = () => {
           </div>
         </aside>
         {/* Child sidebar (settings panel) */}
-        {selectedOption && (
+        {/* {selectedOption && ( */}
           <SidebarSettings selectedOption={selectedOption} />
-        )}
+        {/* )} */}
       </div>
     );
   };

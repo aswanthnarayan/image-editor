@@ -44,7 +44,7 @@ const UploadImage = () => {
     <div>
       <Button
         onClick={onButtonClick}
-        className="relative flex items-center justify-center px-4"
+        className="relative flex items-center justify-center px-4 cursor-pointer"
       >
         {loading && (
           <Loader2Icon className="animate-spin absolute inset-0 m-auto w-4 h-4" />

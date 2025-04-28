@@ -1,6 +1,6 @@
 
 "use client"
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Image from 'next/image'
 import {canvasSizeOptions} from '../../../../services/Options'
 import { useMutation } from 'convex/react'
@@ -9,26 +9,35 @@ import { UserDetailContext } from '@/context/UserDetailContext'
 import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation';
+import { FullScreenLoader } from '@/components/ui/FullScreenLoader'
 
 
 const IntroOptions = () => {
   const { userDetail } = useContext(UserDetailContext);
   const createDesignRecord = useMutation(api.design.CreateNewDesign);
   const router = useRouter();
+  const [isLoading,setIsLoading] = useState(false)
 
   const OnCanvasOptionSelect = async (option: any) => {
-    toast("Creating new design...") 
-    const result = await createDesignRecord({
-      name: option.name,
-      width: option.width,
-      height: option.height,
-      uid: userDetail?._id
-    })
-    toast("Design created successfully");
-    router.push(`/design/${result}`);
-  }
+    setIsLoading(true);
+    toast("Creating new design...");
+    try {
+      const result = await createDesignRecord({
+        name: option.name,
+        width: option.width,
+        height: option.height,
+        uid: userDetail?._id
+      });
+      toast("Design created successfully");
+      router.push(`/design/${result}`);
+    } catch (e) {
+      toast.error("Failed to create design");
+      setIsLoading(false); 
+    }
+  };
   return (
     <div>
+      {isLoading&& <FullScreenLoader/>}
       <div className='relative'>
         <Image src="/banner-home.png" alt="banner" width={1800} height={300} className="w-full h-[150px] object-cover rounded-xl" priority />
     <h2 className='text-2xl font-bold absolute bottom-5 left-5 text-white '>Workspace</h2>

@@ -73,7 +73,7 @@ const CustomImageUpload = ({ selectedAI }: CustomImageUploadProps) => {
         <Image src={image} height={300} width={300} alt="Uploaded" className='w-full h-[150px] object-cover rounded-xl mb-4' unoptimized />
       }
       <input type="file" id="uploadImage" className="hidden" onChange={imageUpload} />
-      <Button onClick={onAddtoCanvas} className='w-full'>{loading ?<Loader2Icon className='animate-spin'/>:'Add to Canvas'}</Button>
+      <Button onClick={onAddtoCanvas} className='w-full cursor-pointer'>{loading ?<Loader2Icon className='animate-spin'/>:'Add to Canvas'}</Button>
 </div>
   );
 }

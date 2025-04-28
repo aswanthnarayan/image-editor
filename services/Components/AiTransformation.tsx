@@ -12,7 +12,7 @@ const AiTransformation = () => {
       {AITransformationSettings.map((item) => (
         <div
           key={item.name}
-          className="flex flex-col items-center bg-white rounded-xl shadow-md border hover:shadow-lg transition-shadow p-2 cursor-pointer group mb-2"
+          className=" cursor-pointer flex flex-col items-center bg-white rounded-xl shadow-md border hover:shadow-lg transition-shadow p-2 cursor-pointer group mb-2"
         >
           <div className="w-full flex items-center justify-center mb-3" onClick={()=>setSelectedAi(item)}>
             <Image

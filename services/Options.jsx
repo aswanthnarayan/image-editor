@@ -11,6 +11,7 @@ import AiTransformation from "./Components/AiTransformation";
 import TextSettings from "./Components/TextSettings";
 import FontFamily from "./Sharable/FontFamily";
 import TemplateList from "./Components/TemplateList";
+import DesignSettings from "./Sharable/DesignSettings";
 
 
 export const SidebarItems = [
@@ -22,7 +23,7 @@ export const SidebarItems = [
   { icon: <Image />, label: "Projects", path: "/workspace/projects" ,path: "/workspace/projects" },
   { icon: <Folder />, label: "Templates", path: "/workspace/templates" ,path: "/workspace/templates" },
   { icon: <WalletIcon />, label: "Billing", path: "/workspace/billing" ,path: "/workspace/billing" },
-  { icon: <Settings />, label: "Settings", path: "/workspace/settings" ,path: "/workspace/settings" },
+//   { icon: <Settings />, label: "Settings", path: "/workspace/settings" ,path: "/workspace/settings" },
 ];
 
 export const canvasSizeOptions = [
@@ -134,7 +135,8 @@ export const sideBarMenu = [
   {
       name: 'Settings',
       desc: 'Update Canvas Size and background',
-      icon: Settings
+      icon: Settings,
+      component: <DesignSettings/>
   }
 ]
 

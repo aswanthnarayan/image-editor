@@ -6,20 +6,41 @@ export const CreateNewDesign = mutation({
       name: v.string(),
       width: v.number(),
       height: v.number(),
-      uid: v.id("users")
+      uid: v.id("users"),
+      imagePreview: v.optional(v.string()),
+      jsonTemplate: v.optional(v.any())
     },
     handler: async (ctx, args) => {
       const result = await ctx.db.insert('designs', {
         name: args.name,
         width: args.width,
         height: args.height,
-        uid: args.uid
+        uid: args.uid,
+        jsonTemplate: args.jsonTemplate , 
+        imagePreview: args.imagePreview ?? "https://ik.imagekit.io/acy6kl72d/gallery.png?updatedAt=1745836257481" 
       })
       return result;
     }
   })
 
-  export const GetDesign = query({
+  export const UpdateDesignSettings = mutation({
+  args: {
+    id: v.id("designs"),
+    name: v.string(),
+    width: v.number(),
+    height: v.number(),
+  },
+  handler: async (ctx, args) => {
+    await ctx.db.patch(args.id, {
+      name: args.name,
+      width: args.width,
+      height: args.height,
+    });
+    return { success: true };
+  },
+});
+
+export const GetDesign = query({
     args: {
       id: v.id("designs")
     },
@@ -52,6 +73,7 @@ export const CreateNewDesign = mutation({
       const result = await ctx.db.query('designs')
       .filter(q=>q.eq(q.field("uid"), args.uid))
       .collect()
+      result.sort((a, b) => new Date(b._creationTime) - new Date(a._creationTime));
       return result;
     }
   })

@@ -8,36 +8,39 @@ import { UserDetailContext } from '@/context/UserDetailContext'
 import { useRouter } from 'next/navigation'
 import { SkeletonCard } from '@/components/ui/SkeltonCard'
 import Image from 'next/image'
+import { FullScreenLoader } from '@/components/ui/FullScreenLoader'
 
 interface RecentDesignProps {
   title?: string;
   limit?: number;
 }
 
-const RecentDesign = ({ title = "Recent Design", limit = 5 }: RecentDesignProps) => {
+const RecentDesign = ({ title = "Recent Design", limit }: RecentDesignProps) => {
     const [designList,setDesignList] = useState([])
-    const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [navLoading, setNavLoading] = useState(false);
     const {userDetail} = useContext(UserDetailContext)
     const convex = useConvex()
   const router = useRouter();
-    useEffect(() => {
-      if (userDetail?._id) {
-          getRecentDesign();
-      }
+  useEffect(() => {
+    if (userDetail?._id) {
+      getRecentDesign();
+    }
   }, [userDetail]);
-  
+
   const getRecentDesign = async () => {
     setIsLoading(true);
-      const result = await convex.query(api.design.GetAllDesignByUser, {
+    const result = await convex.query(api.design.GetAllDesignByUser, {
           uid: userDetail?._id
-      });
+    });
     setDesignList(Array.isArray(result) && limit ? result.slice(0, limit) : result);
     setIsLoading(false);
 
   };
     return (
     <div className='mt-7'>
-<h2 className='text-lg font-bold'>Recent Design</h2>
+      {navLoading && <FullScreenLoader />}
+      <h2 className='text-lg font-bold'>Recent Design</h2>
    {
     designList?.length==0?
     <div className='flex flex-col gap-4 items-center '>
@@ -50,20 +53,39 @@ const RecentDesign = ({ title = "Recent Design", limit = 5 }: RecentDesignProps)
   {isLoading
     ? Array.from({ length: limit }).map((_, i) => (
         
-        <SkeletonCard key={i} width={500} height={200} className='w-full h-[200px] object-cover rounded-lg'/>
+        <SkeletonCard key={i}  className='w-full h-[200px] object-cover rounded-lg'/>
       ))
     : designList?.map((design) => (
-        <div onClick={() => router.push(`/design/${design?._id}`)} key={design._id}>
-          <Image src={design?.imagePreview}
+        <div
+          onClick={() => {
+            setNavLoading(true);
+            setTimeout(() => {
+              router.push(`/design/${design?._id}`);
+            }, 150);
+          }}
+          key={design._id}
+          className="relative group"
+        >
+          <Image
+            src={design?.imagePreview}
             alt={design?.name}
             width={500}
             height={200}
-            className="w-full h-[200px] object-cover rounded-lg"
+            className="w-full h-[200px] object-cover rounded-lg cursor-pointer transition-all duration-300 group-hover:blur-[3px] group-hover:brightness-90"
           />
+          {/* Overlay shown on hover */}
+          <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+            <span className="text-md font-semibold text-white">
+              Click to open in canvas
+            </span>
+          </div>
+          <div className="mt-2 text-center font-bold text-gray-700 truncate">
+            {design?.name}
+          </div>
         </div>
       ))}
 </div>
-   }
+  }
     </div>
   )
 }
