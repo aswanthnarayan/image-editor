@@ -31,7 +31,7 @@ const WorkspaceHeader = () => {
           onClick={handleLogoClick}
         />
       </div>
-      <UserButton/>
+      {user && user.id && <UserButton/>}
     </div>
   )
 }

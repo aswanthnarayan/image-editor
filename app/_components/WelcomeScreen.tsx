@@ -52,11 +52,17 @@ const handleSignUp = () => {
 
       {/* CTA Buttons */}
       <div className="flex gap-4 mt-8 z-30">
-        <button onClick={handleSignIn} className="flex items-center gap-2 px-6 py-2 rounded-lg bg-indigo-600 text-white font-medium shadow hover:bg-indigo-700 transition">
+        <button
+          onClick={handleSignIn}
+          className="flex items-center gap-2 px-6 py-2 rounded-lg bg-indigo-600 text-white font-medium shadow hover:bg-indigo-700 active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-150 cursor-pointer hover:scale-105 hover:translate-y-[-2px]"
+        >
           <LogIn size={18} />
           Sign In
         </button>
-        <button onClick={() => router.push("/handler/signup")} className="flex items-center gap-2 px-6 py-2 rounded-lg bg-white text-indigo-700 font-medium border border-indigo-300 shadow hover:bg-indigo-100 transition">
+        <button
+          onClick={handleSignUp}
+          className="flex items-center gap-2 px-6 py-2 rounded-lg bg-white text-indigo-700 font-medium border border-indigo-300 shadow hover:bg-indigo-100 active:scale-95 focus:outline-none focus:ring-2 focus:ring-indigo-400 transition-all duration-150 cursor-pointer hover:scale-105 hover:translate-y-[-2px]"
+        >
           <UserPlus size={18} />
           Sign Up
         </button>

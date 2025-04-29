@@ -13,7 +13,9 @@ import { useParams, useRouter } from 'next/navigation';
 import { toast } from "sonner";
 import ImageKit from 'imagekit';
 
+
 const DesignHeader = () => {
+  
   var imagekit = new ImageKit({
     publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY || '',
     privateKey: process.env.NEXT_PUBLIC_IMAGEKIT_PRIVATE_KEY || '',
@@ -153,7 +155,7 @@ const DesignHeader = () => {
             <TooltipContent>Download</TooltipContent>
           </Tooltip>
         </TooltipProvider>
-        <UserButton />
+        {user && user.id && <UserButton />}
       </div>
     </div>
   )
