@@ -37,7 +37,8 @@ const [selectedOption, setSelectedOption] = useState<SideBarMenuItem | null>(nul
           </div>
         </aside>
         {/* Child sidebar (settings panel) */}
-        {selectedOption && <SidebarSettings selectedOption={selectedOption} />}
+        <SidebarSettings selectedOption={selectedOption} />
+        {/* {selectedOption && <SidebarSettings selectedOption={selectedOption} />} */}
       </div>
     );
   };

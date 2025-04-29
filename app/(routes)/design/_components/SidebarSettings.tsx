@@ -4,9 +4,9 @@ import React from "react";
 const SidebarSettings = ({
   selectedOption,
 }: {
-  selectedOption: { name: string; desc?: string; component?: React.ReactNode };
+  selectedOption: { name: string; desc?: string; component?: React.ReactNode } | null;
 }) => {
-  if (!selectedOption) {
+  if (!selectedOption || !selectedOption.name) {
     return (
       <div className="w-[280px] h-full flex flex-col items-center justify-center text-gray-400 bg-white border-l">
         <Info className="w-8 h-8 mb-2 text-blue-400 animate-bounce" />
