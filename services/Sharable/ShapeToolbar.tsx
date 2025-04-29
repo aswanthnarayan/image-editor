@@ -1,7 +1,7 @@
 import React from 'react'
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 
-const ShapeToolbar = ({ item }) => {
+const ShapeToolbar = ({ item }: { item: any }) => {
     return (
         <>
             <Popover key={item.name}>

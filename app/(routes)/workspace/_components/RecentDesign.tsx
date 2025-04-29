@@ -9,14 +9,26 @@ import { useRouter } from 'next/navigation'
 import { SkeletonCard } from '@/components/ui/SkeltonCard'
 import Image from 'next/image'
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader'
+import { Id } from '@/convex/_generated/dataModel'
 
 interface RecentDesignProps {
   title?: string;
   limit?: number;
 }
 
+type DesignType = {
+  _id: Id<"designs">;
+  _creationTime: number;
+  jsonTemplate?: any;
+  imagePreview?: string;
+  width: number;
+  height: number;
+  name: string;
+  uid: Id<"users">;
+};
+
 const RecentDesign = ({ title = "Recent Design", limit }: RecentDesignProps) => {
-    const [designList,setDesignList] = useState([])
+    const [designList,setDesignList] = useState<DesignType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [navLoading, setNavLoading] = useState(false);
     const {userDetail} = useContext(UserDetailContext)
@@ -31,7 +43,7 @@ const RecentDesign = ({ title = "Recent Design", limit }: RecentDesignProps) => 
   const getRecentDesign = async () => {
     setIsLoading(true);
     const result = await convex.query(api.design.GetAllDesignByUser, {
-          uid: userDetail?._id
+      uid: userDetail._id as Id<"users">
     });
     setDesignList(Array.isArray(result) && limit ? result.slice(0, limit) : result);
     setIsLoading(false);
@@ -51,7 +63,7 @@ const RecentDesign = ({ title = "Recent Design", limit }: RecentDesignProps) => 
    :
    <div className='grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-5'>
   {isLoading
-    ? Array.from({ length: limit }).map((_, i) => (
+    ? Array.from({ length: limit ?? 5 }).map((_, i) => (
         
         <SkeletonCard key={i}  className='w-full h-[200px] object-cover rounded-lg'/>
       ))
@@ -67,7 +79,7 @@ const RecentDesign = ({ title = "Recent Design", limit }: RecentDesignProps) => 
           className="relative group"
         >
           <Image
-            src={design?.imagePreview}
+            src={design?.imagePreview ?? '/gallery.png'}
             alt={design?.name}
             width={500}
             height={200}

@@ -6,6 +6,7 @@ import { toast } from "sonner";
 
 import { useMutation } from "convex/react";
 import { api } from "@/convex/_generated/api";
+import { Id } from "@/convex/_generated/dataModel";
 
 const DesignSettings = () => {
   const { canvasEditor } = useCanvasHook();
@@ -25,7 +26,7 @@ const DesignSettings = () => {
     try {
       if (design?._id) {
         await updateDesignSettings({
-          id: design._id,
+          id: design._id  as Id<"designs">,
           name,
           width: Number(width),
           height: Number(height),
@@ -62,7 +63,7 @@ const DesignSettings = () => {
             type="number"
             min={100}
             value={width}
-            onChange={e => setWidth(e.target.value)}
+            onChange={e => setWidth(Number(e.target.value))}
             className="border rounded px-2 py-1 w-24"
           />
         </div>
@@ -72,7 +73,7 @@ const DesignSettings = () => {
             type="number"
             min={100}
             value={height}
-            onChange={e => setHeight(e.target.value)}
+            onChange={e => setHeight(Number(e.target.value))}
             className="border rounded px-2 py-1 w-24"
           />
         </div>

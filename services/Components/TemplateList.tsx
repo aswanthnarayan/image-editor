@@ -8,7 +8,7 @@ import { SkeletonCard } from '@/components/ui/SkeltonCard';
 
 const TemplateList = () => {
     const {canvasEditor} = useCanvasHook()
-    const templateList = useQuery(api.template.GetAllTemplates)
+    const templateList = useQuery(api.template.GetAllTemplates,{})
 
     const onTemplateSelect = (template: any) => {
         if (canvasEditor && template.jsonData) {

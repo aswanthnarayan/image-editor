@@ -23,23 +23,34 @@ const DesignHeader = () => {
 
   const {canvasEditor} = useCanvasHook();
   const saveDesign = useMutation(api.design.saveDesign);
-  const {designId} = useParams();  
+  const designId = (useParams() as { [key: string]: string }).designId;
   const onSave = async ()=>{
         const base64Image = canvasEditor?.toDataURL({
           format: 'png',
           quality: 0.5,
           multiplier: 1
-        })
+        });
+        if (!base64Image) {
+          toast.error("Failed to generate image preview.");
+          return;
+        }
+        // Define FileObject for type safety
+        interface FileObject {
+          type: "file";
+          fileId: string;
+          [key: string]: any;
+        }
+        // Type guard for file objects
+        function isFileObject(item: any): item is FileObject {
+          return item.type === "file" && typeof item.fileId === "string";
+        }
         //Get List of images/files
-        const existingFiles = await imagekit.listFiles({
+        const existingFiles: (FileObject | { type: string; [key: string]: any })[] = await imagekit.listFiles({
           searchQuery: 'name='+designId+'.png'
-        })
-
-        //Delete existing file
-        if (existingFiles?.files?.length) {
-          imagekit.deleteFile({
-            fileId: existingFiles.files[0].fileId
-          })
+        });
+        const file = existingFiles.find(isFileObject);
+        if (file) {
+          imagekit.deleteFile(file.fileId);
         }
 
         const imageRef = await imagekit.upload({
@@ -53,7 +64,7 @@ const DesignHeader = () => {
           const jsonDesign = canvasEditor.toJSON();
           try {
             await saveDesign({
-              id: designId,
+              id: Id<"designs">(designId as string),
               jsonDesign,
               imagePreview: imageRef?.url
             });
@@ -149,3 +160,7 @@ const DesignHeader = () => {
 }
 
 export default DesignHeader
+
+function Id<T>(arg0: string): import("convex/values").GenericId<"designs"> {
+  throw new Error('Function not implemented.');
+}

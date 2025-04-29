@@ -73,7 +73,7 @@ export const GetDesign = query({
       const result = await ctx.db.query('designs')
       .filter(q=>q.eq(q.field("uid"), args.uid))
       .collect()
-      result.sort((a, b) => new Date(b._creationTime) - new Date(a._creationTime));
+      result.sort((a, b) => b._creationTime - a._creationTime);
       return result;
     }
   })

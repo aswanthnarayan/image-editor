@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { useCanvasHook } from '@/context/CanvasContext';
 import { FabricImage } from 'fabric';
-import ImageKit from 'imagekit';
+import ImageKit from 'imagekit-javascript';
+// ^ Use browser SDK, not Node.js SDK
 import { ImageUp, Loader2Icon } from 'lucide-react'
 import Image from 'next/image';
 import { useParams } from 'next/navigation';
@@ -15,26 +16,37 @@ interface CustomImageUploadProps {
 
 const CustomImageUpload = ({ selectedAI }: CustomImageUploadProps) => {
   const {canvasEditor} = useCanvasHook();
-  const {designId} = useParams();
+  const designId = (useParams() as { [key: string]: string }).designId;
   const[image,setImage]= useState('')
   const [loading,setLoading] = useState(false)
 
-  var imagekit = new ImageKit({
+  const imagekit = new ImageKit({
     publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY || '',
-    privateKey: process.env.NEXT_PUBLIC_IMAGEKIT_PRIVATE_KEY || '',
     urlEndpoint: process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || ''
-})
+    // No privateKey on frontend!
+  });
 
-  const imageUpload = async(e: React.ChangeEvent<HTMLInputElement>) => {
+  const imageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
-   const imageRef = await imagekit.upload({
-    file: file,
-    fileName: designId!.designId+'.png',
-    isPublished:true
-  })
-   const imageUrl = URL.createObjectURL(file);
-   setImage(imageRef?.url);
+    if (!file || !designId) return;
+
+    // Fetch signature from backend
+    const res = await fetch('/api/imagekit-auth');
+    const auth = await res.json();
+
+    imagekit.upload({
+      file,
+      fileName: (typeof designId === 'string' ? designId : designId) + '.png',
+      signature: auth.signature,
+      token: auth.token,
+      expire: auth.expire,
+    }, (err: any, result: any) => {
+      if (err) {
+        // handle error (you may want to show a toast or set an error state)
+        return;
+      }
+      setImage(result.url);
+    });
   };
 
   const onAddtoCanvas = async() => {

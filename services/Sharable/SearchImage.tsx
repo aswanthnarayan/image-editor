@@ -8,16 +8,25 @@ import { Loader2, SearchIcon } from 'lucide-react'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 
+type UnsplashImage = {
+  id: string;
+  slug: string;
+  urls: {
+    thumb: string;
+    regular: string;
+  };
+};
 const SearchImage = () => {
   const { canvasEditor } = useCanvasHook();
-
-  const [imageList, setImageList] = useState([])
+  const [imageList, setImageList] = useState<UnsplashImage[]>([]);
   const [searchInput, setSearchInput] = useState('')
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     getImageList('gradient')
   }, [query])
+
+  
 
   const getImageList = async (searchInput: string) => {
     setIsLoading(true);

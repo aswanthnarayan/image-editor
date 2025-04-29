@@ -17,7 +17,7 @@ const Billing = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Alert variant="info" className="mb-6">
+          <Alert className="mb-6">
             <Info className="h-5 w-5 text-blue-500" />
             <AlertTitle>Billing in Development</AlertTitle>
             <AlertDescription>

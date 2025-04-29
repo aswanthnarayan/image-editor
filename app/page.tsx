@@ -8,10 +8,10 @@ export default function Home() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (searchParams.get("verifyEmail")) {
+    if (searchParams?.get("verifyEmail")) {
       toast.info("Please verify your email, then try signing in.");
     }
-  }, [searchParams.toString()]);
+  }, [searchParams?.toString()]);
   return (
     <>
       <WelcomeScreen/>

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button'
 import { MousePointer, Trash } from 'lucide-react'
 import React from 'react'
 
-const CommonToolbar = ({ handleSelect, handleDelete }) => {
+const CommonToolbar = ({ handleSelect, handleDelete }: { handleSelect: () => void, handleDelete: () => void }) => {
     return (
         <>
             <Button

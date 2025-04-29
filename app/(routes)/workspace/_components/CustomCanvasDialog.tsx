@@ -16,6 +16,7 @@ import { toast } from 'sonner'
 import { Loader2Icon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader';
+import { Id } from '@/convex/_generated/dataModel';
 
 const CustomCanvasDialog = ({children}: {children: React.ReactNode}) => {
     const [open, setOpen] = useState(false);
@@ -26,22 +27,26 @@ const CustomCanvasDialog = ({children}: {children: React.ReactNode}) => {
     const { userDetail } = useContext(UserDetailContext);
     const createDesignRecord = useMutation(api.design.CreateNewDesign);
     const router = useRouter();
-
+    
     const onCreate = async () => {
-        toast("Creating new design...") 
-        setLoading(true);
-        const result = await createDesignRecord({
-          name: name,
-          width: width,
-          height: height,
-          uid: userDetail?._id
-        })
-        toast("Design created successfully");
-        setOpen(false); 
-        setTimeout(() => {
-            router.push(`/design/${result}`);
-          }, 300); 
+    if (!userDetail?._id) {
+        toast("User ID not found. Please login again.");
+        return;
     }
+    toast("Creating new design...");
+    setLoading(true);
+    const result = await createDesignRecord({
+        name: name,
+        width: width,
+        height: height,
+        uid: userDetail._id as Id<"users">
+    });
+    toast("Design created successfully");
+    setOpen(false);
+    setTimeout(() => {
+        router.push(`/design/${result}`);
+    }, 300);
+}
 
     return (
         <>

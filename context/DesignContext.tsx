@@ -3,6 +3,7 @@ import React, { createContext, useContext, ReactNode } from "react";
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { useParams } from "next/navigation";
+import {Id} from "@/convex/_generated/dataModel"
 
 interface DesignType {
   _id: string;
@@ -24,8 +25,11 @@ interface DesignProviderProps {
 }
 
 export const DesignProvider = ({ children }: DesignProviderProps) => {
-  const { designId } = useParams();
-  const design = useQuery(api.design.GetDesign, designId ? { id: designId as string } : undefined);
+  const designId = (useParams() as { [key: string]: string }).designId;
+  const design = useQuery(
+    api.design.GetDesign,
+    designId ? { id: designId as Id<"designs"> } : "skip"
+  );
 
   return (
     <DesignContext.Provider value={design}>

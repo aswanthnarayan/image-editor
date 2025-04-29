@@ -10,6 +10,7 @@ import { api } from '@/convex/_generated/api';
 import { toast } from 'sonner'
 import { useRouter } from 'next/navigation';
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader'
+import { Id } from '@/convex/_generated/dataModel'
 
 
 const IntroOptions = () => {
@@ -26,7 +27,7 @@ const IntroOptions = () => {
         name: option.name,
         width: option.width,
         height: option.height,
-        uid: userDetail?._id
+        uid: userDetail._id as Id<"users">
       });
       toast("Design created successfully");
       router.push(`/design/${result}`);

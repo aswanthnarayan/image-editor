@@ -10,9 +10,10 @@ import { useMutation } from 'convex/react'
 import { UserDetailContext } from '@/context/UserDetailContext'
 import { useRouter } from 'next/navigation'
 import { SkeletonCard } from '@/components/ui/SkeltonCard'
+import { Id } from '@/convex/_generated/dataModel'
 
 const PreTemplates = () => {
-    const templateList = useQuery(api.template.GetAllTemplates)
+    const templateList = useQuery(api.template.GetAllTemplates,{})
     const CreateDesignFromTemplate = useMutation(api.design.CreateDesignFromTemplate)
     const { userDetail } = useContext(UserDetailContext)
     const router = useRouter()
@@ -25,7 +26,7 @@ const PreTemplates = () => {
             jsonTemplate: template?.jsonData,
             height: template?.height ?? 500,
             width: template?.width ?? 500,
-            uid: userDetail?._id
+            uid: userDetail._id as Id<"users">
         });
         router.push(`/design/${id}`);
         setIsLoading(false)
