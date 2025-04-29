@@ -19,6 +19,16 @@ const DesignSettings = () => {
   const [height, setHeight] = useState(canvasEditor?.height || 800);
   const [loading, setLoading] = useState(false);
 
+  const handleWidthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/^0+/, ''); // Remove leading zeros
+    setWidth(value === '' ? 0 : Number(value));
+  };
+
+  const handleHeightChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value.replace(/^0+/, ''); // Remove leading zeros
+    setHeight(value === '' ? 0 : Number(value));
+  };
+
   // Update canvas size and backend
   const handleApply = async () => {
     setLoading(true);
@@ -60,25 +70,31 @@ const DesignSettings = () => {
         <div>
           <label className="block text-sm font-medium mb-1">Width (px)</label>
           <input
-            type="number"
+            type="text"
             min={100}
             value={width}
-            onChange={e => setWidth(Number(e.target.value))}
+            onChange={handleWidthChange}
             className="border rounded px-2 py-1 w-24"
+            placeholder="Width"
           />
         </div>
         <div>
           <label className="block text-sm font-medium mb-1">Height (px)</label>
           <input
-            type="number"
+            type="text"
             min={100}
             value={height}
-            onChange={e => setHeight(Number(e.target.value))}
+            onChange={handleHeightChange}
             className="border rounded px-2 py-1 w-24"
+            placeholder="Height"
           />
         </div>
       </div>
-      <Button onClick={handleApply} className="w-full mt-2 cursor-pointer" disabled={loading}>
+      <Button 
+        onClick={handleApply} 
+        className="w-full mt-2 cursor-pointer" 
+        disabled={loading || width < 100 || height < 100}
+      >
         {loading ? "Applying..." : "Apply Changes"}
       </Button>
     </div>

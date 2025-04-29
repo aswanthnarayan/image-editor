@@ -15,7 +15,7 @@ import ImageKit from 'imagekit';
 
 
 const DesignHeader = () => {
-  
+  const [isSaving, setIsSaving] = React.useState(false);
   var imagekit = new ImageKit({
     publicKey: process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY || '',
     privateKey: process.env.NEXT_PUBLIC_IMAGEKIT_PRIVATE_KEY || '',
@@ -27,6 +27,9 @@ const DesignHeader = () => {
   const saveDesign = useMutation(api.design.saveDesign);
   const designId = (useParams() as { [key: string]: string }).designId;
   const onSave = async ()=>{
+  setIsSaving(true);
+
+        const savingToastId = toast.loading("Saving design...");
         const base64Image = canvasEditor?.toDataURL({
           format: 'png',
           quality: 0.5,
@@ -34,6 +37,8 @@ const DesignHeader = () => {
         });
         if (!base64Image) {
           toast.error("Failed to generate image preview.");
+          toast.dismiss(savingToastId);
+    setIsSaving(false);
           return;
         }
         // Define FileObject for type safety
@@ -66,16 +71,25 @@ const DesignHeader = () => {
           const jsonDesign = canvasEditor.toJSON();
           try {
             await saveDesign({
-              id: Id<"designs">(designId as string),
+              id: Id<"designs">(designId),
               jsonDesign,
-              imagePreview: imageRef?.url
+              imagePreview: imageRef?.url+ '?t=' + Date.now()
             });
         toast.success("Design saved successfully!");
       } catch {
         toast.error("Failed to save design.");
+      } finally {
+        toast.dismiss(savingToastId);
+        setIsSaving(false);
       }
     }
+    else{
+      toast.error("Failed to save design.");
+      toast.dismiss(savingToastId);
+      setIsSaving(false);
+    }
   }
+
   const onDownload = async () => {
     const dataUrl = canvasEditor?.toDataURL({
       format: 'png',
@@ -134,6 +148,7 @@ const DesignHeader = () => {
                 variant="ghost"
                 className="rounded-full bg-white/80 hover:bg-violet-100 text-violet-600 hover:text-black shadow transition-all"
                 aria-label="Save Design"
+                disabled={isSaving}
               >
                 <Save className="w-5 h-5 transition-colors" />
               </Button>
@@ -163,6 +178,6 @@ const DesignHeader = () => {
 
 export default DesignHeader
 
-function Id<T>(arg0: string): import("convex/values").GenericId<"designs"> {
-  throw new Error('Function not implemented.');
+function Id<T extends string>(id: string): import("convex/values").GenericId<T> {
+  return id as import("convex/values").GenericId<T>;
 }

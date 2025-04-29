@@ -1,9 +1,22 @@
-
 import { Button } from '@/components/ui/button'
-import { MousePointer, Trash } from 'lucide-react'
+import { MousePointer, Trash, ZoomIn, ZoomOut, RefreshCw } from 'lucide-react'
 import React from 'react'
 
-const CommonToolbar = ({ handleSelect, handleDelete }: { handleSelect: () => void, handleDelete: () => void }) => {
+interface CommonToolbarProps {
+    handleSelect: () => void, 
+    handleDelete: () => void, 
+    handleZoomIn?: () => void,
+    handleZoomOut?: () => void,
+    handleResetZoom?: () => void
+}
+
+const CommonToolbar = ({ 
+    handleSelect, 
+    handleDelete, 
+    handleZoomIn,
+    handleZoomOut,
+    handleResetZoom
+}: CommonToolbarProps) => {
     return (
         <>
             <Button
@@ -24,6 +37,43 @@ const CommonToolbar = ({ handleSelect, handleDelete }: { handleSelect: () => voi
             >
                 <Trash strokeWidth={2.2} className="w-4 h-4 text-red-500" />
             </Button>
+            
+            {/* Zoom buttons */}
+            {handleZoomOut && (
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Zoom Out"
+                    onClick={handleZoomOut}
+                    className="w-8 h-8 p-0 hover:text-black hover:bg-gray-100 active:bg-gray-200"
+                >
+                    <ZoomOut strokeWidth={2.2} className="w-4 h-4" />
+                </Button>
+            )}
+            
+            {handleZoomIn && (
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Zoom In"
+                    onClick={handleZoomIn}
+                    className="w-8 h-8 p-0 hover:text-black hover:bg-gray-100 active:bg-gray-200"
+                >
+                    <ZoomIn strokeWidth={2.2} className="w-4 h-4" />
+                </Button>
+            )}
+            
+            {handleResetZoom && (
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Reset Zoom"
+                    onClick={handleResetZoom}
+                    className="w-8 h-8 p-0 hover:text-black hover:bg-gray-100 active:bg-gray-200"
+                >
+                    <RefreshCw strokeWidth={2.2} className="w-4 h-4" />
+                </Button>
+            )}
         </>
     )
 }

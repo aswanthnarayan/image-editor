@@ -30,27 +30,42 @@ const FontStyles = () => {
         }
     }
   return (
-    <div>
-        <Toggle aria-label="Toggle-Bold" onClick={() => onFontStyleChange('bold')}
-        defaultPressed={(() => {
-          const obj = canvasEditor?.getActiveObject();
-          return obj && isTextObject(obj) ? obj.fontWeight === 'bold' : false;
-        })()} >
-            <Bold className='h-4 w-4' size={'lg'}/>
+    <div className="flex gap-1">
+        <Toggle 
+            variant="outline" 
+            size="sm" 
+            aria-label="Toggle-Bold" 
+            onClick={() => onFontStyleChange('bold')}
+            defaultPressed={(() => {
+              const obj = canvasEditor?.getActiveObject();
+              return obj && isTextObject(obj) ? obj.fontWeight === 'bold' : false;
+            })()} 
+        >
+            <Bold className='h-4 w-4' strokeWidth={2.2} />
         </Toggle>
-        <Toggle aria-label="Toggle-Italic" onClick={() => onFontStyleChange('italic')} 
+        <Toggle 
+            variant="outline" 
+            size="sm" 
+            aria-label="Toggle-Italic" 
+            onClick={() => onFontStyleChange('italic')} 
             defaultPressed={(() => {
               const obj = canvasEditor?.getActiveObject();
               return obj && isTextObject(obj) ? obj.fontStyle === 'italic' : false;
-            })()}>
-            <Italic className='h-4 w-4' size={'lg'}/>
+            })()}
+        >
+            <Italic className='h-4 w-4' strokeWidth={2.2} />
         </Toggle>
-        <Toggle aria-label="Toggle-Underline" onClick={() => onFontStyleChange('underline')} 
+        <Toggle 
+            variant="outline" 
+            size="sm" 
+            aria-label="Toggle-Underline" 
+            onClick={() => onFontStyleChange('underline')} 
             defaultPressed={(() => {
               const obj = canvasEditor?.getActiveObject();
               return obj && isTextObject(obj) ? !!obj.underline : false;
-            })()}>
-            <Underline className='h-4 w-4' size={'lg'}/>
+            })()}
+        >
+            <Underline className='h-4 w-4' strokeWidth={2.2} />
         </Toggle>
     </div>
   )

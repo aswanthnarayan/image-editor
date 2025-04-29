@@ -5,7 +5,6 @@ import { useCanvasHook } from '@/context/CanvasContext';
 const BackgroundSettings = () => {
     const [bgColor,setBgColor] = React.useState("#fff")
     const {canvasEditor} = useCanvasHook();
-   console.log(canvasEditor)
     const onColorChange = (color: string) => {
         setBgColor(color);
         if (canvasEditor) {

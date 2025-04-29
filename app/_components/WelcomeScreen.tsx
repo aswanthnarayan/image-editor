@@ -9,7 +9,6 @@ import { useUser } from "@stackframe/stack";
 export function WelcomeScreen() {
 const router = useRouter();
 const user = useUser();
-console.log(user);
 useEffect(() => {
   if (user && user.primaryEmailVerified) {
     router.replace("/workspace");
@@ -17,7 +16,6 @@ useEffect(() => {
 }, [user, router]);
  
 const handleSignIn = () => {
-  console.log("user");
   if(user && user.primaryEmailVerified) {
     router.push("/workspace");
   }

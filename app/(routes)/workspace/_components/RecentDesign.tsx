@@ -10,6 +10,9 @@ import { SkeletonCard } from '@/components/ui/SkeltonCard'
 import Image from 'next/image'
 import { FullScreenLoader } from '@/components/ui/FullScreenLoader'
 import { Id } from '@/convex/_generated/dataModel'
+import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
+import { DeleteAlert } from './DeleteAlert'
 
 interface RecentDesignProps {
   title?: string;
@@ -31,6 +34,7 @@ const RecentDesign = ({ title = "Recent Design", limit }: RecentDesignProps) => 
     const [designList,setDesignList] = useState<DesignType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [navLoading, setNavLoading] = useState(false);
+  const [designToDelete, setDesignToDelete] = useState<DesignType | null>(null);
     const {userDetail} = useContext(UserDetailContext)
     const convex = useConvex()
   const router = useRouter();
@@ -47,12 +51,54 @@ const RecentDesign = ({ title = "Recent Design", limit }: RecentDesignProps) => 
     });
     setDesignList(Array.isArray(result) && limit ? result.slice(0, limit) : result);
     setIsLoading(false);
-
   };
+
+  // Handles deleting a design and its image
+  const handleDesignDelete = async () => {
+    if (!designToDelete) return;
+    
+    setIsLoading(true);
+    try {
+      // Extract file path (including folders) from imagePreview for ImageKit
+      let filePath = "";
+      if (designToDelete.imagePreview) {
+        try {
+          const url = new URL(designToDelete.imagePreview);
+          filePath = url.pathname.startsWith("/") ? url.pathname.slice(1) : url.pathname;
+        } catch {
+          filePath = `${designToDelete._id}.png`;
+        }
+      } else {
+        filePath = `${designToDelete._id}.png`;
+      }
+      
+      await convex.action(api.designActions.deleteDesignAndImage, {
+        id: designToDelete._id,
+        imageFileName: filePath,
+      });
+      
+      await getRecentDesign();
+      toast.success("Design deleted successfully");
+    } catch (err) {
+      toast.error("Failed to delete design");
+    } finally {
+      setIsLoading(false);
+      setDesignToDelete(null);
+    }
+  };
+
     return (
     <div className='mt-7'>
       {navLoading && <FullScreenLoader />}
-      <h2 className='text-lg font-bold'>Recent Design</h2>
+      {/* Delete Confirmation Modal */}
+      <DeleteAlert 
+        isOpen={!!designToDelete}
+        onOpenChange={() => setDesignToDelete(null)}
+        onConfirm={handleDesignDelete}
+        itemName={`design "${designToDelete?.name}"`}
+        isLoading={isLoading}
+      />
+      <h2 className='text-lg font-bold'>{title}</h2>
    {
     designList?.length==0?
     <div className='flex flex-col gap-4 items-center '>
@@ -78,6 +124,19 @@ const RecentDesign = ({ title = "Recent Design", limit }: RecentDesignProps) => 
           key={design._id}
           className="relative group"
         >
+          {/* Delete button */}
+          <button
+            className="absolute top-2 right-2 z-10 bg-black/60 hover:bg-red-600 text-white p-1 rounded-full transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              setDesignToDelete(design);
+            }}
+            disabled={isLoading}
+            aria-label="Delete Design"
+            title="Delete"
+          >
+            <Trash2 className="w-4 h-4" />
+          </button>
           <Image
             src={design?.imagePreview ?? '/gallery.png'}
             alt={design?.name}

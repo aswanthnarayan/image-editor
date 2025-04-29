@@ -2,7 +2,7 @@ import { Canvas } from 'fabric';
 import React, { useEffect, useRef, useState } from 'react';
 import { useDesign } from "@/context/DesignContext";
 import { useCanvasHook } from '@/context/CanvasContext';
-import { Trash, MousePointer, Paintbrush, Palette, PenTool, Ruler } from "lucide-react";
+import { Trash, MousePointer, Paintbrush, Palette, PenTool, Ruler, ZoomIn, ZoomOut, RefreshCw } from "lucide-react";
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { shapesSettingsList, TextSettingsList } from '@/services/Options';
@@ -36,7 +36,7 @@ const CanvasEditor = () => {
                 width: scaledWidth,
                 height: scaledHeight,
                 backgroundColor: '#fff',
-                // preserveObjectStacking: true,
+                 preserveObjectStacking: true,
             });
 
             // Optional: set zoom to scale, so objects still act at their original size
@@ -106,27 +106,6 @@ const CanvasEditor = () => {
         };
     }, [canvas]);
 
-    if (!design) {
-        return (
-            <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-64px)]">
-              <div
-                className="relative flex flex-col items-center justify-center bg-white border border-gray-300 rounded-xl shadow-lg"
-                style={{ width: 500, height: 500 }}
-              >
-                <div className="flex flex-row items-center justify-center gap-6">
-                  <Paintbrush className="h-14 w-14 text-indigo-400 animate-bounce [animation-delay:0ms]" />
-                  <Palette className="h-14 w-14 text-pink-400 animate-bounce [animation-delay:150ms]" />
-                  <PenTool className="h-14 w-14 text-blue-400 animate-spin-slow" />
-                  <Ruler className="h-14 w-14 text-yellow-400 animate-bounce [animation-delay:300ms]" />
-                </div>
-              </div>
-            </div>
-          );
-    }
-    if (!design.width || !design.height) {
-        return <div className="flex items-center justify-center w-full h-full text-red-500">Invalid design data</div>;
-    }
-
     const handleSelect = () => {
         if (canvas) {
             const objects = canvas.getObjects();
@@ -149,22 +128,86 @@ const CanvasEditor = () => {
         }
     };
 
+    const handleZoomObject = (direction: 'in' | 'out') => {
+        if (canvas) {
+          const activeObject = canvas.getActiveObject();
+          if (activeObject) {
+            const currentScaleX = activeObject.scaleX || 1;
+            const currentScaleY = activeObject.scaleY || 1;
+            
+            // Adjust scaling factor
+            const scaleFactor = direction === 'in' ? 1.1 : 0.9;
+            
+            activeObject.set({
+              scaleX: currentScaleX * scaleFactor,
+              scaleY: currentScaleY * scaleFactor
+            });
+            
+            canvas.renderAll();
+          }
+        }
+      };
+
+      const handleResetObjectSize = () => {
+        if (canvas) {
+          const activeObject = canvas.getActiveObject();
+          if (activeObject) {
+            activeObject.set({
+              scaleX: 1,
+              scaleY: 1
+            });
+            
+            canvas.renderAll();
+          }
+        }
+      };
+
+    if (!design) {
+        return (
+            <div className="flex flex-col items-center justify-center w-full h-[calc(100vh-64px)]">
+              <div
+                className="relative flex flex-col items-center justify-center bg-white border border-gray-300 rounded-xl shadow-lg"
+                style={{ width: 500, height: 500 }}
+              >
+                <div className="flex flex-row items-center justify-center gap-6">
+                  <Paintbrush className="h-14 w-14 text-indigo-400 animate-bounce [animation-delay:0ms]" />
+                  <Palette className="h-14 w-14 text-pink-400 animate-bounce [animation-delay:150ms]" />
+                  <PenTool className="h-14 w-14 text-blue-400 animate-spin-slow" />
+                  <Ruler className="h-14 w-14 text-yellow-400 animate-bounce [animation-delay:300ms]" />
+                </div>
+              </div>
+            </div>
+          );
+    }
+    if (!design.width || !design.height) {
+        return <div className="flex items-center justify-center w-full h-full text-red-500">Invalid design data</div>;
+    }
+
     return (
         <div className="w-full h-[calc(100vh-64px)] flex flex-col items-center">
             {!isCanvasEmpty && (
                 <div className="flex gap-2 mb-4 w-full py-2 items-center select-none bg-white">
-                    <CommonToolbar handleSelect={handleSelect} handleDelete={handleDelete} />
-                    {/* Show shape settings if a shape is selected */}
-                    {['rect', 'circle', 'ellipse', 'polygon', 'triangle', 'line'].includes(selectedObjectType || '') && shapesSettingsList.map((item) => (
-                        <ShapeToolbar key={item.name} item={item} />
-                    ))}
-                    {/* Show text settings if a text is selected */}
-                    {selectedObjectType === 'i-text' && TextSettingsList.map((item) => (
-                        <TextToolbar key={item.name} item={item} />
-                    ))}
-                    {
-                        selectedObjectType === 'i-text' && <FontStyles />
+                <CommonToolbar 
+                    handleSelect={handleSelect} 
+                    handleDelete={handleDelete} 
+                    handleZoomIn={() => handleZoomObject('in')}
+                    handleZoomOut={() => handleZoomObject('out')}
+                    handleResetZoom={handleResetObjectSize}
+                />
+                    
+                    {/* Existing toolbars */}
+                    {['rect', 'circle', 'ellipse', 'polygon', 'triangle', 'line'].includes(selectedObjectType || '') && 
+                        shapesSettingsList.map((item) => (
+                            <ShapeToolbar key={item.name} item={item} />
+                        ))
                     }
+                    {selectedObjectType === 'i-text' && 
+                        TextSettingsList.map((item) => (
+                            <TextToolbar key={item.name} item={item} />
+                        ))
+                    }
+                    {selectedObjectType === 'i-text' && <FontStyles />}
+                    
                 </div>
             )}
 
