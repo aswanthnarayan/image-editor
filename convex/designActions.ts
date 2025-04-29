@@ -66,14 +66,12 @@ export const deleteDesignAndImage = action({
                     password: "" 
                 }
             });
-            console.log(`Successfully deleted file: ${fileId}`);
         } catch (error: any) {
             console.error('Failed to delete image:', 
                 error.response ? JSON.stringify(error.response.data) : error.message
             );
         }
     } else {
-        console.log(`No file ID found for: ${args.imageFileName}`);
     }
 
     return { success: true };
