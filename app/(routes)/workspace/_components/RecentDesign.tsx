@@ -80,6 +80,7 @@ const RecentDesign = ({ title = "Recent Design", limit }: RecentDesignProps) => 
       await getRecentDesign();
       toast.success("Design deleted successfully");
     } catch (err) {
+      console.error("Error deleting design:", err);
       toast.error("Failed to delete design");
     } finally {
       setIsLoading(false);
