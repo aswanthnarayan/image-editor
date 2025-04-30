@@ -69,11 +69,12 @@ const DesignHeader = () => {
 
         if(canvasEditor && designId){
           const jsonDesign = canvasEditor.toJSON();
+          
           try {
             await saveDesign({
               id: Id<"designs">(designId),
               jsonDesign,
-              imagePreview: imageRef?.url+ '?t=' + Date.now()
+              imagePreview: imageRef?.url+ '?t=' + Date.now(),
             });
         toast.success("Design saved successfully!");
       } catch {

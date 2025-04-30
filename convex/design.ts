@@ -8,7 +8,7 @@ export const CreateNewDesign = mutation({
       height: v.number(),
       uid: v.id("users"),
       imagePreview: v.optional(v.string()),
-      jsonTemplate: v.optional(v.any())
+      jsonTemplate: v.optional(v.any()),
     },
     handler: async (ctx, args) => {
       const result = await ctx.db.insert('designs', {
@@ -17,7 +17,7 @@ export const CreateNewDesign = mutation({
         height: args.height,
         uid: args.uid,
         jsonTemplate: args.jsonTemplate , 
-        imagePreview: args.imagePreview ?? "https://ik.imagekit.io/acy6kl72d/gallery.png?updatedAt=1745836257481" 
+        imagePreview: args.imagePreview ?? "https://ik.imagekit.io/acy6kl72d/gallery.png?updatedAt=1745836257481" ,
       })
       return result;
     }
@@ -54,12 +54,12 @@ export const GetDesign = query({
     args: {
       id: v.id("designs"),
       jsonDesign: v.any(),
-      imagePreview: v.optional(v.string())
+      imagePreview: v.optional(v.string()),
     },
     handler: async (ctx, args) => {
       const result = await ctx.db.patch(args.id, {
         jsonTemplate: args.jsonDesign,
-        imagePreview: args.imagePreview
+        imagePreview: args.imagePreview,
       })
       return result;
     }
@@ -85,7 +85,7 @@ export const CreateDesignFromTemplate = mutation({
       jsonTemplate: v.any(),
       height: v.number(),
       width: v.number(),
-      uid: v.id("users")
+      uid: v.id("users"),
     },
     handler: async (ctx, args) => {
       const result = await ctx.db.insert('designs', {
@@ -94,7 +94,7 @@ export const CreateDesignFromTemplate = mutation({
         height: args.height,
         jsonTemplate: args.jsonTemplate,
         imagePreview: args.imagePreview,
-        uid: args.uid
+        uid: args.uid,
       })
       return result;
     }
