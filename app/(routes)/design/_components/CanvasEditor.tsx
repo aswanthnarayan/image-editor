@@ -36,7 +36,7 @@ const CanvasEditor = () => {
                 width: scaledWidth,
                 height: scaledHeight,
                 backgroundColor: '#fff',
-                 preserveObjectStacking: true,
+                //  preserveObjectStacking: true,
             });
 
             // Optional: set zoom to scale, so objects still act at their original size
