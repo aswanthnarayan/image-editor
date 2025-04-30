@@ -71,6 +71,8 @@ const RecentDesign = ({ title = "Recent Design", limit }: RecentDesignProps) => 
       } else {
         filePath = `${designToDelete._id}.png`;
       }
+      console.log(filePath)
+      console.log(designToDelete._id);
       
       await convex.action(api.designActions.deleteDesignAndImage, {
         id: designToDelete._id,
